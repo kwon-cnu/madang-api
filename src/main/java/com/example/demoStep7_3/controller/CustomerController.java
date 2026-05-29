@@ -1,0 +1,86 @@
+package com.example.demoStep7_3.controller;
+
+import com.example.demoStep7_3.domain.Customer;
+import com.example.demoStep7_3.dto.CustomerViewDto;
+import org.springframework.web.bind.annotation.*;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/api/customers")
+public class CustomerController {
+
+    private final DataSource dataSource;
+
+    public CustomerController(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    // POST: 고객 등록
+    /*
+    @PostMapping
+    public String addCustomer(@RequestBody CustomerAddDto dto) {
+        int newId = customers.size() + 1; // 임시 ID 생성
+        Customer c = new Customer(newId, dto.getName(), dto.getAddress(), dto.getPhone());
+        customers.add(c);
+        return "고객 등록 완료";
+    }*/
+
+    // GET: 전체 고객 조회
+    @GetMapping("/all")
+    public List<Customer> getCustomersFromMySQL() {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT custid, name, address, phone FROM Customer";
+
+        try (
+                Connection conn = dataSource.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();
+        ) {
+            while (rs.next()) {
+                Customer c = new Customer(
+                        rs.getInt("custid"),
+                        rs.getString("name"),
+                        rs.getString("address"),
+                        rs.getString("phone")
+                );
+                customers.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return customers;
+    }
+
+    @GetMapping
+    public List<CustomerViewDto> getCustomersWithViewDto() {
+            List<CustomerViewDto> result = new ArrayList<>();
+            String sql = "SELECT custid, name, address FROM Customer";
+
+            try (
+                    Connection conn = dataSource.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(sql);
+                    ResultSet rs = stmt.executeQuery()
+            ) {
+                while (rs.next()) {
+                    result.add(new CustomerViewDto(
+                            rs.getInt("custid"),
+                            rs.getString("name"),
+                            rs.getString("address")
+                    ));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+    }
+}

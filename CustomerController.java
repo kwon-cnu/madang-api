@@ -59,7 +59,7 @@ public class CustomerController {
 
         return customers;
     }
-
+    /*
     @GetMapping("/api/customers")
     public List<CustomerViewDto> getCustomersWithViewDto() {
             List<CustomerViewDto> result = new ArrayList<>();
@@ -82,7 +82,7 @@ public class CustomerController {
             }
 
             return result;
-    }
+    }*/
 
     // GET: ID로 특정 고객 조회 (예: /api/customers/1)
     @GetMapping("/api/customers/{custid}")

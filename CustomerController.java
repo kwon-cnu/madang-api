@@ -85,8 +85,9 @@ public class CustomerController {
     }
 
     // GET: ID로 특정 고객 조회 (예: /api/customers/1)
-    @GetMapping("/detail/{custid}")
+    @GetMapping("/{custid}")
     public Customer getCustomerById(@PathVariable("custid") int custid) {
+        System.out.println(">>> 요청된 custid 값: " + custid); // 서버 콘솔에 찍힘
         String sql = "SELECT custid, name, address, phone FROM Customer WHERE custid = ?";
         Customer customer = null;
 

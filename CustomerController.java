@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/customers")
+//@RequestMapping("/api/customers")
 public class CustomerController {
 
     private final DataSource dataSource;
@@ -34,7 +34,7 @@ public class CustomerController {
     }*/
 
     // GET: 전체 고객 조회
-    @GetMapping("/all")
+    @GetMapping("/api/customers/all")
     public List<Customer> getCustomersFromMySQL() {
         List<Customer> customers = new ArrayList<>();
         String sql = "SELECT custid, name, address, phone FROM Customer";
@@ -60,7 +60,7 @@ public class CustomerController {
         return customers;
     }
 
-    @GetMapping
+    @GetMapping("/api/customers")
     public List<CustomerViewDto> getCustomersWithViewDto() {
             List<CustomerViewDto> result = new ArrayList<>();
             String sql = "SELECT custid, name, address FROM Customer";
@@ -85,7 +85,7 @@ public class CustomerController {
     }
 
     // GET: ID로 특정 고객 조회 (예: /api/customers/1)
-    @GetMapping("/{custid}")
+    @GetMapping("/api/customers/{custid}")
     public Customer getCustomerById(@PathVariable("custid") int custid) {
         System.out.println(">>> 요청된 custid 값: " + custid); // 서버 콘솔에 찍힘
         String sql = "SELECT custid, name, address, phone FROM Customer WHERE custid = ?";

@@ -86,7 +86,7 @@ public class CustomerController {
 
     // GET: ID로 특정 고객 조회 (예: /api/customers/1)
     @GetMapping("/{id}")
-    public Customer getCustomerById(@PathVariable int id) {
+    public Customer getCustomerById(@PathVariable("custid") int custid) {
         String sql = "SELECT custid, name, address, phone FROM Customer WHERE custid = ?";
         Customer customer = null;
 
@@ -94,7 +94,7 @@ public class CustomerController {
                 Connection conn = dataSource.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)
         ) {
-            stmt.setInt(1, id); // 첫 번째 ?에 id 값을 바인딩
+            stmt.setInt(1, custid); // 첫 번째 ?에 id 값을 바인딩
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     customer = new Customer(

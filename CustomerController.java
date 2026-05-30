@@ -87,7 +87,7 @@ public class CustomerController {
     // GET: ID로 특정 고객 조회 (예: /api/customers/1)
     @GetMapping("/search/{custid}")
     //@GetMapping("/search")
-    public Customer getCustomerById(@PathVariable int custid) {
+    public Customer getCustomerById(@PathVariable("custid") int custid) {
     //public Customer getCustomerById(@RequestParam("custid") int custid) {
         System.out.println(">>> 요청된 custid 값: " + custid); // 서버 콘솔에 찍힘
         String sql = "SELECT custid, name, address, phone FROM Customer WHERE custid = ?";
@@ -113,5 +113,10 @@ public class CustomerController {
         }
 
         return customer; // 데이터가 없으면 null 반환
+    }
+
+    @GetMapping("/search/test")
+    public String testSearch() {
+        return "search mapping works : I was found.";
     }
 }
